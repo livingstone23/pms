@@ -30,7 +30,7 @@ public class Employee
 
 
     //Relationship : Many to One
-    public GeneralDeparment GeneralDeparment { get; set; }
+    public GeneralDeparment? GeneralDeparment { get; set; }
     public int GeneralDeparmentId { get; set; }
 
     public Department? Department { get; set; }
