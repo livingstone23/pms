@@ -1,4 +1,4 @@
-using BaseLibrary.Entities;
+﻿using BaseLibrary.Entities;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -9,7 +9,7 @@ namespace ServerLibrary.Data;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    
+
 
     public DbSet<Employee> Employees { get; set; } = null!;
 
@@ -23,5 +23,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 
     public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
     
+    public DbSet<SystemRole> SystemRoles { get; set; } = null!;
+
+    public DbSet<UserRole> UserRoles { get; set; } = null!;
+    
+    public DbSet<RefreshTokenInfo> RefreshTokenInfos { get; set; } = null!;
+
+
 
 }
+
