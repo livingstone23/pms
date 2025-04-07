@@ -8,3 +8,14 @@
 @using Microsoft.JSInterop
 @using PVM.MNM.CLI
 @using PVM.MNM.CLI.Layout
+
+@using BaseLibrary.DTOs
+@using ClientLibrary.Helpers
+@using ClientLibrary.Services.Contracts
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+@* Authentication *@
+@inject IUserAccountService accountService

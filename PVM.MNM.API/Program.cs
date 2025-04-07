@@ -28,6 +28,17 @@ builder.Services.Configure<JwtSection>(builder.Configuration.GetSection("JwtSect
 //Inject the services
 builder.Services.AddScoped<IUserAccount, UserAccountRepository>();
 
+//Enabling CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlazorWasm",
+        builder => builder
+            .WithOrigins("http://localhost:5290", "https://localhost:7292")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 
 var app = builder.Build();
 
