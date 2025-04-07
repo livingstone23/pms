@@ -84,7 +84,7 @@ public class UserAccountService(GetHttpClient getHttpClient) : IUserAccountServi
         try
         {
             var httpClient = getHttpClient.GetPublicHttpClient();
-            var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+            var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
             return result!;
         }
         catch (Exception e)
