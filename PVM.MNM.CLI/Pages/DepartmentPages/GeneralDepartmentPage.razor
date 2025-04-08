@@ -73,7 +73,10 @@
 
     void OpenDialog()
     {
-        generalDepartmentDialog?.OpenDialog();
+        if (generalDepartmentDialog != null)
+        {
+            generalDepartmentDialog.OpenDialog();
+        }
     }
 
 }
