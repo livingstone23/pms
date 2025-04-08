@@ -1,0 +1,36 @@
+﻿@page "/home/dashboard"
+@using PVM.MNM.CLI.Pages.AdministrationPages
+@using PVM.MNM.CLI.Pages.DepartmentPages
+<TableBanner/>
+<GeneralDepartmentPage />
+
+
+@code {
+    
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+
+        await CheckUserAuthenticaion();
+
+    }
+
+    private async Task CheckUserAuthenticaion()
+    {
+        
+        var user = (await AuthenticationState).User;
+
+        bool isUserAuthenticated = user.Identity.IsAuthenticated;
+        if (!isUserAuthenticated)
+        {
+            // User is not authenticated, navigate to the login page
+            NavManager.NavigateTo("/identity/account/login");
+        }
+
+    }
+
+
+}

@@ -1,15 +1,30 @@
 ﻿@page "/identity/account/login"
+@using Syncfusion.Blazor.Popups
+@layout AuthenticationLayout
+@inject SfDialogService DialogService
 
 
 
 <div class="container">
     <div class="row">
-        <div class="col-lg-6">
-            <EditForm Enfance Model="User" OnValidSubmit="HandleLogin">
+        <div class="col-lg-5"></div>
+
+        <div class="col-lg-2">
+            <EditForm Enhance Model="User" OnValidSubmit="HandleLogin">
                 <DataAnnotationsValidator/>
                 <ValidationSummary/>
-                <div class="card">
-                    <div class="card-header text-center fs-5 mb-2">Fill this form to Login</div>
+                <div class="card bg-dark justify-content-center" style="opacity:0.85; margin-top:50%; border-radius:10px; color:white; font-weight:bold;">
+                    <div class="card-header text-center fs-5 mb-2">Login</div>
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 d-flex justify-content-center">
+                                <img style="border-radius:20px;" src="../images/companylogos/ABA4.png" height="50" width="50"/>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4"></div>
+                        </div>
+                    </div>
 
                     <div class="card-body">
                         <div class="form-group mt-3">
@@ -18,83 +33,93 @@
                         </div>
                         <div class="form-group mt-3">
                             <label class="form-label">Password</label>
-                            <input type="password" @bind="User.Password" class="form-control" />
+                            <input type="password" @bind="User.Password" class="form-control"/>
                         </div>
                         <div class="form-group mt-3">
                             <button class="btn btn-outline-primary float-end" type="submit">Login</button>
                         </div>
                     </div>
+                    
                     <div class="card-footer">
                         <span class="text-center">
                             Don`t have account? |
                             <a class="btn-link" href="identity/account/register">Sign Up</a>
                         </span>
+                        <ValidationSummary/>
                     </div>
 
                 </div>
             </EditForm>
-        </div>     
-        <div class="col-lg-4"></div>
+        </div>
+
+        <div class="col-lg-5"></div>
     </div>
 </div>
 
+
+
 @code {
 
-    //public bool ShowLoadingButton { get; set; } = false;
-    
-    // private FluentDialog? _myFluentDialog;
-
-    // [CascadingParameter]
-    // public Task<AuthenticationState> AuthenticationState { get; set; }
-
-    // protected async override Task OnInitializedAsync()
-    // {
-    //     await CheckUserAuthentication();
-    // }
+    public bool ShowLoadingButton { get; set; } = false;
 
     Login User = new();
 
+    // private FluentDialog? _myFluentDialog;
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        await CheckUserAuthentication();
+    }
+
+
     async Task HandleLogin()
     {
-        //ShowLoadingButton = true;
+        
+        ShowLoadingButton = true;
 
         var result = await accountService.SignInAsync(User);
         if (result.Flag)
         {
-            //await DisplayDialog(result.Message, "Login Success");
+            await DisplayDialog(result.Message, "Login Success");
             var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
             await customAuthStateProvider.UpdateAuthenticationState(new UserSession()
                 {
                     Token = result.Token,
                     RefreshToken = result.RefreshToken
                 });
-            NavManager.NavigateTo("/", forceLoad: true);
+            NavManager.NavigateTo("/home/dashboard", forceLoad: true);
         }
-        // else
-        // {
-        //     await DisplayDialog(result.Message, "Alert");
-        // }
+        else
+        {
+            await DisplayDialog(result.Message, "Alert");
+        }
 
-        //ShowLoadingButton = false;
+        ShowLoadingButton = false;
+
     }
 
-    // private async Task DisplayDialog(string content, string title)
-    // {
-    //     if (title == "Alert")
-    //         await DialogService.ShowWarningAsync(content);
-    //     if (title == "Login Success")
-    //     {
-    //         var dialog = await DialogService.ShowSuccessAsync(content);
-    //         await dialog.Result;
-    //     }
-    // }
+    private async Task DisplayDialog(string content, string title)
+    {
 
-    // private async Task CheckUserAuthentication()
-    // {
-    //     var user = (await AuthenticationState).User;
-    //     bool isUserAuthenticated = user.Identity!.IsAuthenticated;
+        await DialogService.AlertAsync(content, title);
 
-    //     if (isUserAuthenticated)
-    //         NavManager.NavigateTo("/home/dashboard");
-    // }
+        // if (title == "Alert")
+        //     await DialogService.ShowWarningAsync(content);
+        // if (title == "Login Success")
+        // {
+        //     var dialog = await DialogService.ShowSuccessAsync(content);
+        //     await dialog.Result;
+        // }
+    }
+
+    private async Task CheckUserAuthentication()
+    {
+        var user = (await AuthenticationState).User;
+
+        if (user.Identity is not null)
+            NavManager.NavigateTo("/home/dashboard");
+    }
 }

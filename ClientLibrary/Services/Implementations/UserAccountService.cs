@@ -1,8 +1,10 @@
-using System.Net.Http.Json;
+
 using BaseLibrary.DTOs;
+
 using BaseLibrary.Responses;
 using ClientLibrary.Helpers;
 using ClientLibrary.Services.Contracts;
+using System.Net.Http.Json;
 
 
 
@@ -10,13 +12,16 @@ namespace ClientLibrary.Services.Implementations;
 
 
 
-public class UserAccountService(GetHttpClient getHttpClient) : IUserAccountService
+public class UserAccountService : IUserAccountService
 {
-
-
     public const string AuthUrl = "api/authentication";
+    private readonly GetHttpClient getHttpClient;
 
-    
+    public UserAccountService(GetHttpClient getHttpClient)
+    {
+        this.getHttpClient = getHttpClient;
+    }
+
     public async Task<GeneralResponse> CreateAsync(Register user)
     {
 
@@ -75,16 +80,32 @@ public class UserAccountService(GetHttpClient getHttpClient) : IUserAccountServi
         }
 
     }
-    
 
+
+
+    //public async Task<WeatherForecast[]> GetWheaterForecasts()
+    //{
+
+    //    try
+    //    {
+    //        var httpClient = getHttpClient.GetPrivateHttpClient();
+    //        var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/weatherforecast");
+    //        return result!;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.WriteLine(e);
+    //        throw;
+    //    }
+
+    //}
 
     public async Task<WeatherForecast[]> GetWheaterForecasts()
     {
-        
         try
         {
-            var httpClient = getHttpClient.GetPublicHttpClient();
-            var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
+            var httpClient = await getHttpClient.GetPrivateHttpClient();
+            var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/weatherforecast");
             return result!;
         }
         catch (Exception e)
@@ -92,8 +113,30 @@ public class UserAccountService(GetHttpClient getHttpClient) : IUserAccountServi
             Console.WriteLine(e);
             throw;
         }
-
     }
 
-    
+    //public async Task<WeatherForecast[]> GetWheaterForecasts()
+    //{
+    //    try
+    //    {
+    //        var httpClient = getHttpClient.GetPublicHttpClient();
+
+    //        if (string.IsNullOrEmpty(_token))
+    //        {
+    //            throw new InvalidOperationException("No token available for authorization.");
+    //        }
+
+    //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+
+    //        var result = await httpClient.GetFromJsonAsync<WeatherForecast[]>("api/WeatherForecast");
+    //        return result!;
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        Console.WriteLine(e);
+    //        throw;
+    //    }
+    //}
+
+
 }

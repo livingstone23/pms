@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Authorization
+@using PVM.MNM.CLI.Pages.OtherPages
 @inherits LayoutComponentBase
+@attribute [Authorize]  
+
 
 
 <div class="page">
@@ -10,16 +13,15 @@
     <main>
         <div class="top-row px-4">
             <AuthorizeView>
-                <Authorized>
+                @* <Authorized>
                     <a class="btn btn-none text-danger" @onclick="LogoutClicked">Logout</a>
-                </Authorized>
-                <NotAuthorized>
+                </Authorized> 
+                  <NotAuthorized>
                     <a class="btn btn-none" href="identity/account/login">Login</a>
                     <a class="btn btn-none" href="identity/account/Register">Register</a>
-                </NotAuthorized>
+                </NotAuthorized> *@
             </AuthorizeView>
-            
-           
+            <ProfileDropDown></ProfileDropDown>
         </div>
 
         <article class="content px-4">
@@ -28,6 +30,8 @@
     </main>
 </div>
 
+<Syncfusion.Blazor.Popups.SfDialogProvider />
+
 @code {
 
     async Task LogoutClicked()
@@ -35,9 +39,7 @@
         var logoutModel = new UserSession();
         var customAuthStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
         await customAuthStateProvider.UpdateAuthenticationState(logoutModel);
-        NavManager.NavigateTo("/", forceLoad: true);
+        NavManager.NavigateTo("/identity/account/login", forceLoad: true);
     }
-
-
 
 }
