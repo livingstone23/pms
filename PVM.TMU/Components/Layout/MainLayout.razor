@@ -1,24 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-
-@* Required *@
-<MudThemeProvider IsDarkMode="true"/>
-<MudPopoverProvider @rendermode="InteractiveServer"/>
-
-@* Needed for dialogs *@
-<MudDialogProvider @rendermode="InteractiveServer" />
-
-@* Needed for snackbars *@
-<MudSnackbarProvider @rendermode="InteractiveServer" />
-
-<MudContainer MaxWidth="MaxWidth.ExtraLarge">
-    <div class="mt-5">
-        @Body
-    </div>
-</MudContainer>
-
-
-@* <div class="page">
+<div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
@@ -32,7 +14,7 @@
             @Body
         </article>
     </main>
-</div> *@
+</div>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
