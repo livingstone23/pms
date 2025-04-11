@@ -4,6 +4,7 @@ using Infraestructure.Data;
 using Infraestructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MudBlazor.Services;
 using PVM.TMU.Components;
 
 
@@ -41,7 +42,10 @@ builder.Services.AddDbContext<AppDBContext>(opt=>{
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 
+builder.Services.AddMudServices();
 
+
+builder.Services.AddMudServices();
 
 
 var app = builder.Build();
