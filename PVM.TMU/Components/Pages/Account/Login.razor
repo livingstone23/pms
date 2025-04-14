@@ -1,64 +1,73 @@
 @page "/login"
+@layout EmptyLayout
+
+
 @using System.ComponentModel.DataAnnotations
-@using Domain.Entities
 @using Domain.Interfaces
 @using Microsoft.AspNetCore.Identity
 
+
 @inject IAccountService accountService;
-@inject SignInManager<User> signInManager;
-@inject NavigationManager navigationManager
+@inject NavigationManager nav
+@inject EncryptionHelper<LoginDTO> encryp;
 
 
-<h1>Login</h1>
+@rendermode  InteractiveServer
 
 
 <section class="vh-100">
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
-            <img src="/assets/imgs/login-img.jpg" class="img-fluid" alt="sample image"/>
-        </div>
-        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
-                <p class="lead fw-normal mb-0 me-3">Sign in with Email</p>
+
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="/assets/imgs/login-img-min1.jpg" class="img-fluid" alt="sample image"/>
             </div>
 
+
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+                    <p class="lead fw-normal mb-0 me-3">Sign in with Email</p>
+                </div>
+
+                <Alert @ref="alert" />
+
+                <EditForm Model="Input" method="post" OnValidSubmit="OnLogin" FormName="Login">
+
+                    <DataAnnotationsValidator/>
+
+                    <hr/>
+                    <div class="form-floating mb-3">
+                        <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" placeholder="Email"/>
+                        <label for="email" class="form-label">Email</label>
+                        <ValidationMessage For="@(() => Input.Email)" class="text-danger"/>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputText type="password" @bind-Value="Input.Password" class="form-control" aria-required="true" placeholder="Password"/>
+                        <label for="password" class="form-label">Password</label>
+                        <ValidationMessage For="@(() => Input.Password)" class="text-danger"/>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <InputCheckbox @bind-Value="Input.Remember"/>
+                        Remember Me
+                    </div>
+                    <div>
+                        <button type="submit" class="w-100 btn btn-lg btn-primary">Login</button>
+                    </div>
+
+                </EditForm>
+
+            </div>
         </div>
     </div>
 </section>
 
 
-<section>
-            <EditForm Model="Input" method="post" OnValidSubmit="OnLogin" FormName="Login">
-
-                <DataAnnotationsValidator/>
-
-                <hr/>
-                <div class="form-floating mb-3">
-                    <InputText @bind-Value="Input.Email" class="form-control" aria-required="true" placeholder="Email"/>
-                    <label for="email" class="form-label">Email</label>
-                    <ValidationMessage For="@(() => Input.Email)" class="text-danger"/>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <InputText type="password" @bind-Value="Input.Password" class="form-control" aria-required="true" placeholder="Password"/>
-                    <label for="password" class="form-label">Password</label>
-                    <ValidationMessage For="@(() => Input.Password)" class="text-danger"/>
-                </div>
-
-                <div class="form-floating mb-3">
-                    <InputCheckbox @bind-Value="Input.Remember"/>
-                    Remember Me
-                </div>
-
-                <div>
-                    <button type="submit" class="w-100 button btn-Login btn-primary">Login</button>
-                </div>
-
-            </EditForm>
-        </section>
-
 
 @code {
+
+
+    private Alert alert;
+
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
@@ -69,27 +78,39 @@
     //     await accountService.RegisterUser(new Domain.DTO.Request.RegisterUserRequest
     //     {
     //         Email = "test@gmail.com",
-    //         Role = "Admin"
+    //             Role = "Admin",
     //     });
     // }
 
+
     private async Task OnLogin()
     {
+
         var verify = await accountService.VerifyUser(Input.Email, Input.Password);
         if (!verify.IsSuccess)
         {
-            //Alert
+            alert.ShowFailed(verify.ErrorMessage);
             return;
         }
-        
-        await signInManager.PasswordSignInAsync(verify.Value, Input.Password, Input.Remember, false);
-        navigationManager.NavigateTo("/");
+
+        var loginData = new LoginDTO
+        {
+            Username = verify.Value,
+            Password = Input.Password,
+            Rememberme = Input.Remember
+        };
+
+        var payload = encryp.Encode(loginData);
+
+        //nav.NavigateTo($"/processor/{verify.Value}/{Input.Password}/{Input.Remember}");
+        nav.NavigateTo($"/processor/{payload}");
 
     }
 
 
     private sealed class InputModel
     {
+
         [Required]
         [EmailAddress]
         public string Email {get;set;} = "";

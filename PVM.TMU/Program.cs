@@ -1,12 +1,14 @@
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Repository;
 using Infraestructure.Data;
+using Infraestructure.Repository;
 using Infraestructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using PVM.TMU.Components;
-
+using PVM.TMU.Security;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddCircuitOptions(options => options.DetailedErrors = true);  // Habilitar errores detallados
+
 
 //Enable Authorization and Authentication
 builder.Services.AddAuthorization();
@@ -40,15 +44,23 @@ builder.Services.AddDbContext<AppDBContext>(opt=>{
 
 //Enable Services
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ICriteriaService, CriteriaServices>();
+builder.Services.AddScoped<ITicketService, TicketService>();
+
+
+builder.Services.AddScoped(typeof(EncryptionHelper<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+
 
 
 builder.Services.AddMudServices();
 
-
-builder.Services.AddMudServices();
 
 
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -57,6 +69,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 
 app.UseHttpsRedirection();
 

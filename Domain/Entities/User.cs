@@ -14,5 +14,4 @@ public class User: IdentityUser
     public bool AccountConfirmed { get; set; } = false;
 
     
-
 }

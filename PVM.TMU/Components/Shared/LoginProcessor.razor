@@ -1,0 +1,32 @@
+﻿@page "/processor/{payload}"
+@layout EmptyLayout
+
+@using Domain.Entities
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> signInManager
+@inject NavigationManager nav
+@inject EncryptionHelper<LoginDTO> encryp;
+
+
+Sign In...
+
+
+@code {
+
+
+    [Parameter] public string payload { get; set; }
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //Decode the payload
+        var loginData = encryp.Decode(payload);
+        
+        await signInManager.PasswordSignInAsync(loginData.Username, loginData.Password, loginData.Rememberme, false);
+        nav.NavigateTo("/");
+
+    }
+
+}

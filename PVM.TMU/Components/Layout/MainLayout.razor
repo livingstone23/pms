@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+
+
 @* Required *@
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -16,11 +18,17 @@
     </div>
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+        <div class="top-row d-flex justify-content-between" style="padding:35px">
+            <div style="font-size:25px">
+                <SectionOutlet SectionName="page-title"></SectionOutlet>
+
+            </div>
+            <AuthorizeView>
+                <a href="/logout">Logout</a>
+            </AuthorizeView>
         </div>
 
-        <article class="content px-4">
+        <article class="content">
             @Body
         </article>
     </main>
