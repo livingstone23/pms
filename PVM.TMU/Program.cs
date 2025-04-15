@@ -55,6 +55,7 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 
 
 builder.Services.AddMudServices();
+builder.Services.AddHttpContextAccessor();
 
 
 

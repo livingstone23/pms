@@ -2,6 +2,7 @@ using Domain.DTO.Request;
 using Domain.DTO.Response;
 using Domain.Entities;
 using Domain.Interfaces;
+using Domain.Repository;
 using Microsoft.AspNetCore.Identity;
 
 
@@ -14,10 +15,12 @@ public class AccountService : IAccountService
 {
 
     private readonly SignInManager<User> _signInManager;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AccountService(SignInManager<User> signInManager)
+    public AccountService(SignInManager<User> signInManager, IUnitOfWork unitOfWork)
     {
         this._signInManager = signInManager;
+        this._unitOfWork = unitOfWork;
     }
     
 
@@ -41,6 +44,7 @@ public class AccountService : IAccountService
         };
 
     }
+
 
     public async Task<BaseResponse<string>> VerifyUser(string email, string password)
     {
@@ -68,7 +72,20 @@ public class AccountService : IAccountService
 
         return response;
 
-
     }
+
+
+    public List<GetUserResponse> GetUsers()
+    {
+
+        return _unitOfWork.Repository<User>().ListAll().Select(x => new GetUserResponse
+        {
+            Id = x.Id,
+            Email = x.Email,
+            Avatar = x.Avatar
+        }).ToList();
+        
+    }
+
 
 }

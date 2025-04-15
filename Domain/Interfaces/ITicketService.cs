@@ -14,7 +14,7 @@ public interface ITicketService
 
     GetTicketResponse FindTicket(int ticketId);
 
-    
+    Task<BaseResponse> UpdateTicket(UpdateTicketRequest request);
 
-    
+
 }

@@ -29,7 +29,8 @@ public class TicketRepository : GenericRepository<Ticket>, ITicketRepository
                                     .Include(t => t.Priority)
                                     .Include(t => t.Product)
                                     .Include(t => t.User)
-                                    .Include(t => t.AssignedTo);
+                                    .Include(t => t.AssignedTo)
+                                ;
         
 
         if (request == null) return query.ToList();

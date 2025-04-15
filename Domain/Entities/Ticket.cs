@@ -25,7 +25,7 @@ public class Ticket
     
     public DateTime RaisedDate { get; set; }
     
-    public DateTime? ExpectedDate { get; set; }
+    public DateTime ExpectedDate { get; set; }
 
 
     [ForeignKey(nameof(AssignedToId))]
@@ -53,7 +53,15 @@ public class Ticket
     public Priority Priority { get; set; } = null!;
 
 
-    public string Status { get; set; } 
+    public string Status { get; set; }
+
+
+    public string? ClosedBy { get; set; }
+    
+    public DateTime? ClosedDate { get; set; }
+    
+    public DateTime? LastUpdateDate { get; set; }
+
 
     public virtual ICollection<Attachment> Attachments { get; set; } = null!;
 

@@ -11,6 +11,7 @@ public interface IAccountService
 
     Task<BaseResponse> RegisterUser(RegisterUserRequest request);
 
+    List<GetUserResponse> GetUsers();
 
 
 }

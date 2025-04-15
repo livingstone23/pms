@@ -33,9 +33,13 @@ public class GetTicketResponse
 
     public string Status { get; set; }
 
+    public string AssignedToId { get; set; }
+
     public string? RaisedBy { get; set; }
 
-    public DateTime? ExpectedDate { get; set; }
+    public string? RaisedByName { get; set; }
+
+    public DateTime ExpectedDate { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

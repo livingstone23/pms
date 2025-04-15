@@ -39,10 +39,10 @@ public class AppDBContext : IdentityDbContext<User>
 
         builder.GenerateSeed();
 
-        builder.Entity<Ticket>()
-            .HasOne(t => t.User)
-            .WithMany()
-            .OnDelete(DeleteBehavior.NoAction);
+        //builder.Entity<Ticket>()
+        //    .HasOne(t => t.User)
+        //    .WithMany()
+        //    .OnDelete(DeleteBehavior.NoAction);
 
         builder.Entity<Discussion>()
             .HasOne(t => t.Ticket)
