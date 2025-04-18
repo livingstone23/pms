@@ -1,9 +1,9 @@
 @page "/ticket"
-
-
-<SectionContent SectionName="page-title">Ticket Management</SectionContent>
 @using Domain.DTO.Request
-@using Domain.Entities
+@using Microsoft.AspNetCore.Authorization
+
+
+@attribute [Authorize]
 @rendermode InteractiveServer
 @inject ITicketService ticketService
 @inject ICriteriaService criteriaService
@@ -12,6 +12,7 @@
 
 
 <MudPopoverProvider />
+<SectionContent SectionName="page-title">Ticket Management</SectionContent>
 
 
 <style>
@@ -122,6 +123,9 @@ RowClick="RowClicked"
 
 @code {
 
+    [SupplyParameterFromQuery]
+    public string? filterStatus { get; set; }
+
 
     MudDataGrid<GetTicketResponse> dataGrid;
 
@@ -190,6 +194,14 @@ RowClick="RowClicked"
 
         try
         {
+
+            if (filterStatus != null)
+            {
+                statusDDL.options = new string[] { filterStatus };
+                filterStatus = null;
+                StateHasChanged();
+            }
+
 
             IEnumerable<GetTicketResponse> getTickets = ticketService.GetTickets(new GetTicketRequest()
             {

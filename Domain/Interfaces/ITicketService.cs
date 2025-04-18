@@ -19,4 +19,11 @@ public interface ITicketService
     Task<BaseResponse<int>> CreateTicket(CreateTicketRequest request);
 
 
+    List<ChartResponse> Last12MonthTickets();
+
+    List<ChartResponse> ChartByCategory(string category);
+
+    List<ChartResponse> GetSummary();
+
+
 }

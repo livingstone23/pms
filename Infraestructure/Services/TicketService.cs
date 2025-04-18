@@ -30,7 +30,6 @@ public class TicketService : ITicketService
         _unitOfWork = unitOfWork;
         _httpContextAccesor = httpContextAccesor;
         _webHostEnvironment = webHostEnvironment;
-        var v = httpContextAccesor.HttpContext.User;
     }
 
     public GetTicketResponse FindTicket(int ticketId)
@@ -241,7 +240,20 @@ public class TicketService : ITicketService
 
     }
 
+    public List<ChartResponse> Last12MonthTickets()
+    {
+        return _unitOfWork.TicketRepository.Last12MonthTickets();
+    }
 
+    public List<ChartResponse> ChartByCategory(string category)
+    {
+        return _unitOfWork.TicketRepository.ChartByCategory(category);
+    }
+
+    public List<ChartResponse> GetSummary()
+    {
+        return _unitOfWork.TicketRepository.GetSummary();
+    }
 
 
 }

@@ -1,4 +1,5 @@
 using Domain.DTO.Request;
+using Domain.DTO.Response;
 using Domain.Entities;
 
 
@@ -11,5 +12,11 @@ public interface ITicketRepository: IGenericRepository<Ticket>
 {
 
     List<Ticket> GetTickets(GetTicketRequest request);
+
+    List<ChartResponse> Last12MonthTickets();
+
+    List<ChartResponse> ChartByCategory(string category);
+
+    List<ChartResponse> GetSummary();
 
 }
