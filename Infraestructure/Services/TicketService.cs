@@ -48,7 +48,8 @@ public class TicketService : ITicketService
             RaisedByName = result.User?.Email,
             CreatedDate = result.RaisedDate,
             ExpectedDate = result.ExpectedDate,
-
+            ClosedBy = result.ClosedBy,
+            ClosedDate = result.ClosedDate,
         };
 
     }

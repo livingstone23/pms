@@ -44,5 +44,6 @@ public class GetTicketResponse
     public DateTime CreatedDate { get; set; }
 
     public string? AssignedTo { get; set; }
-
+    public string? ClosedBy { get; set; }
+    public DateTime? ClosedDate { get; set; }
 }
