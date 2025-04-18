@@ -17,7 +17,7 @@ public class Attachment
 
     public string ServerFileName { get; set; } = string.Empty;
 
-    public int FileSize { get; set; }
+    public long FileSize { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

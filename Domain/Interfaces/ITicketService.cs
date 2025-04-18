@@ -16,5 +16,7 @@ public interface ITicketService
 
     Task<BaseResponse> UpdateTicket(UpdateTicketRequest request);
 
+    Task<BaseResponse<int>> CreateTicket(CreateTicketRequest request);
+
 
 }
