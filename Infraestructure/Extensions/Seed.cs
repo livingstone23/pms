@@ -32,6 +32,31 @@ public static class Seed
         //Seed user
         modelBuilder.Entity<User>().HasData(appUser);
 
+        //Seed roles
+        modelBuilder.Entity<IdentityRole>().HasData(
+            new IdentityRole
+            {
+                Id = Constants.ROLE_ADMIN_ID,
+                Name = Constants.ROLE_ADMIN,
+                NormalizedName = Constants.ROLE_ADMIN.ToUpper()
+            },
+            new IdentityRole
+            {
+                Id = Constants.ROLE_USER_ID,
+                Name = Constants.ROLE_USER,
+                NormalizedName = Constants.ROLE_USER.ToUpper()
+            }
+        );
+
+        //Assign Roles to Users
+        modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+            new IdentityUserRole<String>
+            {
+                RoleId = Constants.ROLE_ADMIN_ID,
+                UserId = user1
+            }
+        );
+
         //Seed categories
         modelBuilder.Entity<Category>().HasData(
             new Category

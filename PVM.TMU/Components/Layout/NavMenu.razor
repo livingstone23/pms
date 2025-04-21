@@ -22,6 +22,14 @@
             <i class="fas fa-tasks"></i>
         </NavLink>
     </li>
+    
+    <AuthorizeView Roles="Admin">
+        <li class="nav-item">
+            <NavLink Match="NavLinkMatch.All" class="nav-link d-flex justify-content-center" href="user">
+                <i class="fas fa-user-gear"></i>
+            </NavLink>
+        </li>
+    </AuthorizeView>
 
 </ul>
 
