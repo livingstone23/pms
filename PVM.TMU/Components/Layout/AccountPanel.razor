@@ -83,14 +83,31 @@
     border-radius: 5px;
     cursor: pointer;
     }
+
+    .hidden {
+        display: none;
+    }
+
+    .visible {
+        display: block;
+    }
+
+    .account-popup {
+        display: none;
+    }
+
+    .account-popup.visible {
+        display: block;
+    }
+
+
 </style>
 
 
 <img @onclick="ProfileToggle" src="@avatarSource" class="profile-img-btn">
-<MudOverlay @bind-Visible="showPopUp" LightBackground AutoClose="true" />
+<MudOverlay Visible="@showPopUp" LightBackground AutoClose="true" />
 
-
-<div hidden="@(!showPopUp)" class="account-popup">
+<div class="account-popup @(showPopUp ? "visible" : "")">
     <div class="header">
         <img src="@avatarSource" alt="Profile Picture" class="profile-img">
         <div class="user-info">
@@ -98,10 +115,12 @@
             <p>@email</p>
         </div>
     </div>
-    <button @onclick="@(() => NavigateTo("/avatar"))" class="manage-account">Change Avatar</button>
-    <button @onclick="@(() => NavigateTo("/changepassword"))" class="manage-account">Change Password</button>
-    <button @onclick="@(() => NavigateTo("/logout"))" class="sign-out">Sign out</button>
+    <button @onclick="@(() => NavigateTo("/avatar"))" class="manage-account" >Change Avatar</button>
+    <button @onclick="@(() => NavigateTo("/changepassword"))" class="manage-account" >Change Password</button>
+    <button @onclick="@(() => NavigateTo("/logout"))" class="sign-out" >Sign out</button>
 </div>
+
+
 
 
 @code {
@@ -119,26 +138,23 @@
     {
         if (firstRender)
         {
-            var avatar = await ProtectedSessionStore.GetAsync<string>("avatar");
-            if (avatar.Success && avatar.Value != null)
+            try
             {
-                avatarFileName = avatar.Value;
+                var avatar = await ProtectedSessionStore.GetAsync<string>("avatar");
+                avatarFileName = avatar.Success && avatar.Value != null ? avatar.Value : Constants.DEFAULT_AVATAR;
+
+                var emailResult = await ProtectedSessionStore.GetAsync<string>("email");
+                email = emailResult.Success ? emailResult.Value : "Unknown";
             }
-            else
+            catch (Exception ex)
             {
                 avatarFileName = Constants.DEFAULT_AVATAR;
+                email = "Error loading email";
+                // Opcional: Loggear el error
             }
 
             avatarSource = Path.Combine(avatarPath, avatarFileName);
-
-            var email = await ProtectedSessionStore.GetAsync<string>("email");
-            if (email.Success)
-            {
-                this.email = email.Value;
-            }
-
             StateHasChanged();
-
         }
     }
 
