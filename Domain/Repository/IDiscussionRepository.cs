@@ -1,6 +1,12 @@
-﻿namespace Domain.Repository;
+﻿using Domain.Entities;
 
-public interface IDiscussionRepository
+
+
+namespace Domain.Repository;
+
+
+
+public interface IDiscussionRepository: IGenericRepository<Discussion>
 {
-    
+    List<Discussion> GetDiscussions(int ticketId);
 }

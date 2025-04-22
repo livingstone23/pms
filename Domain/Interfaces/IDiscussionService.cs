@@ -1,6 +1,17 @@
-﻿namespace Domain.Interfaces;
+﻿using Domain.DTO.Request;
+using Domain.DTO.Response;
+
+
+
+namespace Domain.Interfaces;
+
+
 
 public interface IDiscussionService
 {
-    
+
+    IList<DiscussionResponse> GetDiscusions(int ticketId);
+
+    Task<BaseResponse> Create(CreateDiscussionRequest request);
+
 }
