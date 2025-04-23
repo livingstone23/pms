@@ -19,4 +19,6 @@ public interface ITicketRepository: IGenericRepository<Ticket>
 
     List<ChartResponse> GetSummary();
 
+    Ticket FindTicket(int ticketId);
+
 }

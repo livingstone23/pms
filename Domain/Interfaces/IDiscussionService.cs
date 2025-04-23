@@ -10,7 +10,7 @@ namespace Domain.Interfaces;
 public interface IDiscussionService
 {
 
-    IList<DiscussionResponse> GetDiscusions(int ticketId);
+    List<DiscussionResponse> GetDiscusions(int ticketId);
 
     Task<BaseResponse> Create(CreateDiscussionRequest request);
 

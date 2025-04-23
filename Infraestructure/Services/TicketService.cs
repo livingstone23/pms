@@ -35,10 +35,11 @@ public class TicketService : ITicketService
     public GetTicketResponse FindTicket(int ticketId)
     {
 
-        var result = _unitOfWork.Repository<Ticket>().GetByIdAsync(ticketId);
+        //var result = _unitOfWork.Repository<Ticket>().GetByIdAsync(ticketId);
+        var result = _unitOfWork.TicketRepository.FindTicket(ticketId);
         if (result == null) return null;
 
-        var attachments = _unitOfWork.Repository<Attachment>().ListAll().Where(x => x.TicketId == result.TicketId);
+        //var attachments = _unitOfWork.Repository<Attachment>().ListAll().Where(x => x.TicketId == result.TicketId);
         var attachmentpath = Path.Combine("uploads", "attachments");
 
         return new GetTicketResponse
@@ -54,11 +55,12 @@ public class TicketService : ITicketService
             AssignedToId = result.AssignedToId,
             RaisedBy = result.User?.Id,
             RaisedByName = result.User?.Email,
+            RaisedByAvatar = result.User?.Avatar,
             CreatedDate = result.RaisedDate,
             ExpectedDate = result.ExpectedDate,
             ClosedBy = result.ClosedBy,
             ClosedDate = result.ClosedDate,
-            Attachments = attachments.Select(x => new AttachmentResponse
+            Attachments = result.Attachments.Select(x => new AttachmentResponse
             {
                 FileName = x.FileName,
                 ServerFileName = Path.Combine(attachmentpath, x.ServerFileName),
@@ -120,7 +122,7 @@ public class TicketService : ITicketService
 
             currentTicket.ClosedDate = DateTime.Now;
 
-            var currentUser = _httpContextAccesor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+            var currentUser = _httpContextAccesor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             if (currentUser == null)
             {
@@ -158,6 +160,8 @@ public class TicketService : ITicketService
 
         try
         {
+
+            var use = _httpContextAccesor.HttpContext.User.Claims;
 
             var currentUser = _httpContextAccesor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
             if (currentUser == null)

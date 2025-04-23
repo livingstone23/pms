@@ -16,14 +16,19 @@ public class UnitOfWork : IUnitOfWork
     
     private Hashtable repositories;
 
-    public ITicketRepository TicketRepository { get; }   
-    
+    public ITicketRepository TicketRepository { get; }
 
-    public UnitOfWork(AppDBContext context, ITicketRepository ticketRepository)
+    public IDiscussionRepository DiscussionRepository {get;}
+
+    public UnitOfWork(  AppDBContext context, 
+                        ITicketRepository ticketRepository, 
+                        IDiscussionRepository discussionRepository)
     {
         _context = context;
         TicketRepository = ticketRepository;
+        DiscussionRepository = discussionRepository;
     }
+
 
 
     public async Task<int> SaveChanges()

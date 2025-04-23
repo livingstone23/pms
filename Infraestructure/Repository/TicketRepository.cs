@@ -145,6 +145,11 @@ public class TicketRepository : GenericRepository<Ticket>, ITicketRepository
 
     }
 
-
-
+    public Ticket FindTicket(int ticketId)
+    {
+        return dbContext.Set<Ticket>()
+                .Include(t => t.User)
+                .Include(t => t.Attachments)
+                .FirstOrDefault(x => x.TicketId == ticketId);
+    }
 }

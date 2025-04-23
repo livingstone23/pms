@@ -50,7 +50,7 @@ public class GetTicketResponse
     public DateTime? ClosedDate { get; set; }
 
     public List<AttachmentResponse> Attachments { get; set; }
-
+    public string? RaisedByAvatar { get; set; }
 }
 
 public class AttachmentResponse
