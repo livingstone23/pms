@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
 using PVM.TMU.Components;
+using PVM.TMU.Extensions.Helpers;
 using PVM.TMU.Security;
 
 
@@ -42,6 +43,10 @@ builder.Services.AddDbContext<AppDBContext>(opt=>{
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+//builder.Services.AddScoped<AuthenticatedUserAccessor>();
+
+builder.Services.AddMudServices();
+builder.Services.AddHttpContextAccessor();
 
 //Enable Services
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -56,8 +61,7 @@ builder.Services.AddScoped<ITicketRepository, TicketRepository>();
 builder.Services.AddScoped<IDiscussionRepository, DiscussionRepository>();
 
 
-builder.Services.AddMudServices();
-builder.Services.AddHttpContextAccessor();
+
 
 
 

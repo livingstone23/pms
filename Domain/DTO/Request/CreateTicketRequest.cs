@@ -27,6 +27,9 @@ public class CreateTicketRequest
     public string AssignedToId { get; set; }
 
 
+    public string? RaisedBy { get; set; }
+
+
     public IList<IBrowserFile> files;
 
 
