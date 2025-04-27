@@ -20,13 +20,18 @@ public class UnitOfWork : IUnitOfWork
 
     public IDiscussionRepository DiscussionRepository {get;}
 
+    public IConversationRepository ConversationRepository { get; }
+
     public UnitOfWork(  AppDBContext context, 
                         ITicketRepository ticketRepository, 
-                        IDiscussionRepository discussionRepository)
+                        IDiscussionRepository discussionRepository,
+                        IConversationRepository conversationRepository
+                        )
     {
         _context = context;
         TicketRepository = ticketRepository;
         DiscussionRepository = discussionRepository;
+        ConversationRepository = conversationRepository;
     }
 
 

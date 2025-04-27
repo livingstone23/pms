@@ -7,6 +7,8 @@ public interface IUnitOfWork: IDisposable
 
     IDiscussionRepository DiscussionRepository { get; }
 
+    IConversationRepository ConversationRepository { get; }
+
     IGenericRepository<TEntity> Repository<TEntity>() where TEntity : class;
     
     Task<int> SaveChanges();
