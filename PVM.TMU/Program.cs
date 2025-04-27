@@ -10,6 +10,7 @@ using MudBlazor.Services;
 using PVM.TMU.Components;
 using PVM.TMU.Extensions.Helpers;
 using PVM.TMU.Security;
+using PVM.TMU.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,7 +64,7 @@ builder.Services.AddScoped<IDiscussionRepository, DiscussionRepository>();
 builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
 
 
-
+builder.Services.AddScoped<TwilioConversationService>();
 
 
 var app = builder.Build();

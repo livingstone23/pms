@@ -1,0 +1,90 @@
+﻿@page "/conversation"
+@using Infraestructure.Services
+@using Domain.DTO.Request
+@using Domain.DTO.Response
+@using MudBlazor
+@using PVM.TMU.Services
+
+@inject TwilioConversationService twilioConversationService
+@inject IConversationService conversationService
+
+
+@rendermode InteractiveServer
+
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="p-4">
+    <MudCard>
+        <MudCardContent>
+            <MudText Typo="Typo.h5" Align="Align.Center">Create New Conversation</MudText>
+
+            <MudForm @ref="form">
+                <!-- Campo para User Phone -->
+                <MudTextField Label="User Phone" @bind-Value="conversationRequest.UserPhone" Floating="true" />
+
+                <!-- Campo para Description -->
+                <MudTextField Label="Description" @bind-Value="conversationRequest.Description" Floating="true" />
+
+                <!-- Botón para llamar al evento -->
+                <MudButton Variant="Variant.Filled" OnClick="CreateConversation" Color="Color.Primary">
+                    Create Conversation
+                </MudButton>
+            </MudForm>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
+
+@code {
+
+    private string userPhoneError = string.Empty;
+    private string descriptionError = string.Empty;
+
+    private MudForm form;  // Definimos el formulario
+    private CreateConversationRequest conversationRequest = new CreateConversationRequest
+        {
+            UserPhone = string.Empty,
+            Description = string.Empty,
+            DateCreation = DateTime.Now,
+            DateUpdated = DateTime.Now,
+            State = "Active",
+            ConversationSid = string.Empty
+        };
+
+    private bool isLoading = false;
+    private string successMessage = string.Empty;
+    private string errorMessage = string.Empty;
+
+    // Método para manejar el envío del formulario
+    private async Task CreateConversation()
+    {
+
+        userPhoneError = string.IsNullOrWhiteSpace(conversationRequest.UserPhone) ? "User Phone is required." : string.Empty;
+        descriptionError = string.IsNullOrWhiteSpace(conversationRequest.Description) ? "Description is required." : string.Empty;
+
+
+        Console.WriteLine("CreateConversation method called.");
+        isLoading = true;
+        successMessage = string.Empty;
+        errorMessage = string.Empty;
+
+        try
+        {
+            string conversationSid = twilioConversationService.CreateConversation(conversationRequest.Description);
+            conversationRequest.ConversationSid = conversationSid;
+
+            var createConversationResult = await conversationService.CreateConversation(conversationRequest);
+
+            if (createConversationResult.IsSuccess)
+            {
+                successMessage = "Conversation created successfully!";
+            }
+            else
+            {
+                errorMessage = "Failed to create conversation!";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error: {ex.Message}";
+        }
+    }
+}

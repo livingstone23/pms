@@ -16,6 +16,7 @@
     <PackageReference Include="MudBlazor" Version="8.5.1" />
     <PackageReference Include="MudExRichTextEditor" Version="8.0.3" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Twilio" Version="7.10.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Infraestructure\Infraestructure.csproj" />

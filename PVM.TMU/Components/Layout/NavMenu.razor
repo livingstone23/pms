@@ -23,6 +23,13 @@
         </NavLink>
     </li>
     
+    <!-- Conversation Link -->
+    <li class="nav-item">
+        <NavLink Match="NavLinkMatch.All" class="nav-link d-flex justify-content-center" href="Conversation">
+            <i class="fas fa-comments"></i>  <!-- Usando un ícono representativo para "Conversation" -->
+        </NavLink>
+    </li>
+    
     <AuthorizeView Roles="Admin">
         <li class="nav-item">
             <NavLink Match="NavLinkMatch.All" class="nav-link d-flex justify-content-center" href="user">

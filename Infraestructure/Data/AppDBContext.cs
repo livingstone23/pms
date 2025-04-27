@@ -30,6 +30,8 @@ public class AppDBContext : IdentityDbContext<User>
     
     public DbSet<Attachment> Attachments { get; set; } = null!;
 
+    public DbSet<Conversation> Conversations { get; set; } = null!;
+
 
 
     protected override void OnModelCreating(ModelBuilder builder)
